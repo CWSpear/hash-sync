@@ -1,6 +1,6 @@
 angular.module('HashSync', [])
 
-.directive('hashSync', function ($location) {
+.directive('hashSync', ['$location', function ($location) {
   // all these `function _______` fns are cuz Angular
   // doesn't expose most of it's helper functions!
 
@@ -100,4 +100,4 @@ angular.module('HashSync', [])
       });
     }
   };
-});
+}]);
