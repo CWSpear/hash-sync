@@ -1,4 +1,4 @@
-hash-sync
+Hash Sync
 =========
 
 AngularJS directive for syncing a model with the URL hash.

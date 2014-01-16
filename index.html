@@ -1,0 +1,32 @@
+<!doctype html>
+<html ng-app="HashSyncDemo">
+<head>
+  <meta charset="utf-8">
+  <title>Hash Sync!</title>
+
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
+  <script src="hash-sync.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-controller="MainCtrl">
+  <div>
+    Selection:
+    <select hash-sync ng-model="selection">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+    </select>
+  </div>
+
+  <div>
+    Text:
+    <input type="text" hash-sync ng-model="text1">
+    <input type="text" hash-sync ng-model="text2">
+  </div>
+
+  <div>
+    <input type="checkbox" hash-sync ng-model="check">
+  </div>
+</body>
+</html>
