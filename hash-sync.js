@@ -64,7 +64,7 @@ angular.module('HashSync', [])
 
   // getter/setter for hash/obj to and fro
   var getHash = function () {
-    return parseKeyValue($location.hash().replace(/^#/, ''));
+    return parseKeyValue($location.hash());
   };
 
   var setHash = function (obj) {
