@@ -11,6 +11,10 @@ Don't forgot:
 
 ```javascript
 app.config(function ($locationProvider) {
-  $locationProvider.html5Mode(true).hashPrefix('!');
+    $locationProvider.html5Mode(true).hashPrefix('!');
 });
 ```
+
+### Demo
+
+[http://cwspear.github.io/hash-sync/](http://cwspear.github.io/hash-sync/)
