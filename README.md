@@ -7,7 +7,7 @@ The goal of this module is to be able to automatically sync model changes to the
 
 The use case would be to easily recreate a form state without any session/localStorage variables (i.e. so it could be shareable, or recreated on another computer quickly and easily).
 
-Don't forgot:
+Don't forget the following, which is needed for the hash tag to work without affecting Angular routing:
 
 ```javascript
 app.config(function ($locationProvider) {
