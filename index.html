@@ -10,8 +10,8 @@
 </head>
 <body ng-controller="MainCtrl">
   <div>
-    Selection:
-    <select hash-sync ng-model="selection">
+    Selection (maintains history):
+    <select hash-sync replace-history="false" ng-model="selection">
       <option>1</option>
       <option>2</option>
       <option>3</option>

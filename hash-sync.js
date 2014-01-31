@@ -1,6 +1,6 @@
 angular.module('HashSync', [])
 
-.directive('hashSync', ['$location', function ($location) {
+.directive('hashSync', ['$location', '$parse', function ($location, $parse) {
   // all these `function _______` fns are cuz Angular
   // doesn't expose most of it's helper functions!
 
@@ -62,21 +62,26 @@ angular.module('HashSync', [])
     return parts.length ? parts.join('&') : '';
   }
 
-  // getter/setter for hash/obj to and fro
-  var getHash = function () {
-    return parseKeyValue($location.hash());
-  };
-
-  var setHash = function (obj) {
-    var obj2 = {};
-    // strip out blank values
-    angular.forEach(obj, function (v, k) { if (v) obj2[k] = v; });
-    $location.hash(toKeyValue(obj2));
-  };
-
   return {
     require: 'ngModel',
     link: function postLink(scope, elem, attrs, ngModel) {
+      // getter/setter for hash/obj to and fro
+      var getHash = function () {
+        return parseKeyValue($location.hash());
+      };
+
+      var setHash = function (obj) {
+        var obj2 = {};
+        // strip out blank values
+        angular.forEach(obj, function (v, k) { if (v) obj2[k] = v; });
+        $location.hash(toKeyValue(obj2));
+        if (replaceHistory) {
+          $location.replace();
+        }
+      };
+
+      var replaceHistory = ($parse(attrs.replaceHistory)({}) === false) ? false : true;
+
       // keeping it DRY
       var hashToModel = function () {
         var obj = getHash();
