@@ -1,0 +1,25 @@
+{
+  "name": "hash-sync",
+  "main": "hash-sync.js",
+  "version": "1.1.0",
+  "authors": [
+    "Cameron Spear <cam@cameronspear.com>"
+  ],
+  "description": "AngularJS directive and service for syncing a model with the URL hash.",
+  "keywords": [
+    "angularjs",
+    "hash",
+    "directive",
+    "service",
+    "sync"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/CWSpear/hash-sync",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
