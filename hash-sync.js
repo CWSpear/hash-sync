@@ -1,6 +1,81 @@
-angular.module('HashSync', [])
+;(function () {
+  angular.module('HashSync', [])
 
-.directive('hashSync', ['$location', '$parse', function ($location, $parse) {
+  .directive('hashSync', ['$parse', 'hashSyncHelper', function ($parse, helper) {
+    return {
+      require: 'ngModel',
+      link: function postLink(scope, elem, attrs, ngModel) {
+        var replaceHistory = ($parse(attrs.replaceHistory)({}) === false) ? false : true;
+
+        // keeping it DRY
+        var hashToModel = function () {
+          var obj = helper.getHash();
+          ngModel.$setViewValue(obj[attrs.ngModel]);
+          ngModel.$render();
+        };
+
+        // on directive creation, set value of model to hash value
+        if (!ngModel.$viewValue) hashToModel();
+
+        // on model change, update the hash
+        scope.$watch(attrs.ngModel, function (val) {
+          var obj = helper.getHash();
+          obj[attrs.ngModel] = ngModel.$viewValue;
+          helper.setHash(obj, replaceHistory);
+        });
+        
+        // on hashchange, update the model
+        window.addEventListener('hashchange', function () {
+          scope.$apply(hashToModel);
+        });
+      }
+    };
+  }])
+
+  .factory('hashSyncHelper', ['$location', '$parse', '$rootScope', function ($location, $parse, $rootScope) {
+    var service = {
+      getHash: function () {
+        return parseKeyValue($location.hash());
+      },
+
+      setHash: function (obj, replaceHistory) {
+        if (!isDefined(replaceHistory)) replaceHistory = true;
+
+        var obj2 = {};
+        // strip out blank values
+        angular.forEach(obj, function (v, k) { if (v) obj2[k] = v; });
+        $location.hash(toKeyValue(obj2));
+        if (replaceHistory) {
+          $location.replace();
+        }
+      },
+
+      sync: function (expr, scope, replaceHistory) {
+        if (!scope) scope = $rootScope;
+
+        var setHash = function (val, old) {
+          var obj = service.getHash();
+          obj[expr] = val;
+          service.setHash(obj, replaceHistory);
+        };
+
+        setHash($parse(expr)(scope));
+
+        scope.$watch(expr, setHash);
+
+        window.addEventListener('hashchange', function () {
+          scope.$apply(function () {
+            var obj = service.getHash();
+            var val = obj[expr];
+            $parse(expr).assign(scope, val);
+          });
+        });
+      }
+    };
+
+    return service;
+  }]);
+
   // all these `function _______` fns are cuz Angular
   // doesn't expose most of it's helper functions!
 
@@ -61,48 +136,4 @@ angular.module('HashSync', [])
     });
     return parts.length ? parts.join('&') : '';
   }
-
-  return {
-    require: 'ngModel',
-    link: function postLink(scope, elem, attrs, ngModel) {
-      // getter/setter for hash/obj to and fro
-      var getHash = function () {
-        return parseKeyValue($location.hash());
-      };
-
-      var setHash = function (obj) {
-        var obj2 = {};
-        // strip out blank values
-        angular.forEach(obj, function (v, k) { if (v) obj2[k] = v; });
-        $location.hash(toKeyValue(obj2));
-        if (replaceHistory) {
-          $location.replace();
-        }
-      };
-
-      var replaceHistory = ($parse(attrs.replaceHistory)({}) === false) ? false : true;
-
-      // keeping it DRY
-      var hashToModel = function () {
-        var obj = getHash();
-        ngModel.$setViewValue(obj[attrs.ngModel]);
-        ngModel.$render();
-      };
-
-      // on directive creation, set value of model to hash value
-      if (!ngModel.$viewValue) hashToModel();
-
-      // on model change, update the hash
-      scope.$watch(attrs.ngModel, function (val) {
-        var obj = getHash();
-        obj[attrs.ngModel] = ngModel.$viewValue;
-        setHash(obj);
-      });
-      
-      // on hashchange, update the model
-      window.addEventListener('hashchange', function () {
-        scope.$apply(hashToModel);
-      });
-    }
-  };
-}]);
+})();
