@@ -29,7 +29,7 @@ app.config(function ['$locationProvider', ($locationProvider) {
 
 ### Location History
 
-By default, the directive *will* replace history (via `$location.replace()` (see **Replace method** on http://docs.angularjs.org/guide/dev_guide.services.$location)). This means that updating a text field does *not* create a place in history (i.e. without this, you could hit back to undo every change to any `hash-sync` input and that's usually not desirable).
+By default, the directive *will* replace history (via `$location.replace()` (see **`replace()`** in [Angular Docs on $location](https://docs.angularjs.org/api/ng/service/$location))). This means that updating a text field does *not* create a place in history (i.e. without this, you could hit back to undo every change to any `hash-sync` input and that's usually not desirable).
 
 If you *do* want it to create a new item in the history, you can add a `replace-history="false"` to the element, and this will create instead of replace in the location history.
 

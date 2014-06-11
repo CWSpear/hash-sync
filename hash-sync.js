@@ -1,4 +1,4 @@
-;(function () {
+;(function (angular) {
   angular.module('HashSync', [])
 
   .directive('hashSync', ['$parse', 'hashSyncHelper', function ($parse, helper) {
