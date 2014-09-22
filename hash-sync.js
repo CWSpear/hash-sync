@@ -1,4 +1,4 @@
-;(function (angular) {
+;(function (window, angular) {
   angular.module('HashSync', [])
 
   .directive('hashSync', ['$parse', 'hashSyncHelper', function ($parse, helper) {
@@ -136,4 +136,4 @@
     });
     return parts.length ? parts.join('&') : '';
   }
-})();
+})(this, angular);
